@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,8 +23,6 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
-
-
 
 @ExtendWith(MockitoExtension.class)
 public class CloudVendorServiceImplTest {
@@ -43,10 +42,12 @@ public class CloudVendorServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        cloudVendorModelTest=new CloudVendorModel(1,"Amazon", "USA", "Vendor1");
+        cloudVendorModelTest=new CloudVendorModel(1L,"Amazon", "USA", "Vendor1");
 
-        vendorlist.add(new CloudVendorModel(2, "GCP", "USA", "Vendor2"));
-        vendorlist.add(new CloudVendorModel(3, "Azure", "USA", "Vendor3"));
+        vendorlist=new ArrayList<>();
+        vendorlist.add(new CloudVendorModel(2L, "GCP", "USA", "Vendor2"));
+        vendorlist.add(new CloudVendorModel(3L, "Azure", "USA", "Vendor3"));
+
     }
 
     @Test
@@ -64,10 +65,9 @@ public class CloudVendorServiceImplTest {
         when(cloudVendorRepository.findById(anyLong())).thenReturn(Optional.ofNullable(cloudVendorModelTest));
         CloudVendorModel vendordetails = cloudVendorService.getCloudVendor(1L);
 
-
         assertNotNull(vendordetails);
 
-        assertEquals(vendordetails.getVendorNumber(), cloudVendorModelTest.getVendorName());
+        assertEquals(vendordetails.getVendorName(), cloudVendorModelTest.getVendorName());
         assertEquals(vendordetails.getVendorAddress(), cloudVendorModelTest.getVendorAddress());
         assertEquals(vendordetails.getVendorNumber(), cloudVendorModelTest.getVendorNumber());
 
@@ -77,9 +77,9 @@ public class CloudVendorServiceImplTest {
     public void verify_user_should_be_able_to_throw_exception_if_vendor_does_not_exist() {
 
         when(cloudVendorRepository.findById(anyLong())).thenThrow(new CloudVendorNotFoundException("Vendor details not found"));
-        CloudVendorModel getvendor = cloudVendorService.getCloudVendor(2L);
-        CloudVendorNotFoundException cexception = assertThrows(CloudVendorNotFoundException.class, () -> cloudVendorService.getCloudVendor(7L));
-        assertEquals("Vendor details not found", cexception.getMessage());
+
+        CloudVendorNotFoundException ceException = assertThrows(CloudVendorNotFoundException.class, () -> cloudVendorService.getCloudVendor(7L));
+        assertEquals("Vendor details not found", ceException.getMessage());
 
     }
     @Test
@@ -101,13 +101,9 @@ public class CloudVendorServiceImplTest {
     @Test
     public void verify_user_should_be_able_to_delete_vendor_details_by_id()
     {
-
-
-        String check = cloudVendorService.deleteCloudVendor(1L);
-
-        assertEquals("deleted successfully", check);
-
-
+        when(cloudVendorRepository.findById(anyLong())).thenReturn(Optional.of(cloudVendorModelTest));
+        String result = cloudVendorService.deleteCloudVendor(5L);
+        assertEquals("deleted successfully", result);
 
     }
 }
