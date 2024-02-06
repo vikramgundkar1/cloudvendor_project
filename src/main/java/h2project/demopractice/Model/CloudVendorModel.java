@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name="vendor_details")
 public class CloudVendorModel {
-	
+	// This is a entity class
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	long vendorId;
