@@ -1,6 +1,7 @@
 package h2project.demopractice.service.serviceImpl;
 
 import h2project.demopractice.Model.CloudVendorModel;
+import h2project.demopractice.exceptions.CloudVendorDetailsEmptyListAdded;
 import h2project.demopractice.exceptions.CloudVendorNotFoundException;
 
 import h2project.demopractice.repository.CloudVendorRepository;
@@ -31,6 +32,19 @@ public class CloudVendorServiceImpl implements CloudVendorService {
 
 
     }
+    @Override
+    public String createCloudVendorList(List<CloudVendorModel> cloudVendorlist) {
+        // Optional<List<CloudVendorModel>> check = Optional.of(cloudVendorlist);
+        if (!cloudVendorlist.isEmpty()) {
+            cloudVendorRepository.saveAll(cloudVendorlist);
+
+        } else {
+            throw new CloudVendorDetailsEmptyListAdded("Please add at least one cloud vendor and then submit");
+        }
+
+        return "List added successfully";
+    }
+
 
     @Override
     public String updateCloudVendor(CloudVendorModel cloudVendorModel, Long vendorId) {

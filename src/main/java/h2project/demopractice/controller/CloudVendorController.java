@@ -32,6 +32,14 @@ public class CloudVendorController {
 
 	}
 
+	@PostMapping("/create/list")
+
+	public ResponseEntity<Object> createCloudvendorDeatilslist(@RequestBody List<CloudVendorModel> cloudVendorModellist) {
+		cloudVendorService.createCloudVendorList(cloudVendorModellist);
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+	}
+
 	@GetMapping("/getall")
 	public ResponseEntity<List<CloudVendorModel>> getAllCloudVendorDetails() {
 

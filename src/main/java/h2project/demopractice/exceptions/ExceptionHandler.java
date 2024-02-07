@@ -31,6 +31,17 @@ public class ExceptionHandler {
 
     }
 
+    @org.springframework.web.bind.annotation.ExceptionHandler(value={CloudVendorDetailsEmptyListAdded.class})
+    public ResponseEntity<Object> CloudVendorDetailsEmptyListAddedHandler (CloudVendorDetailsEmptyListAdded cloudVendorDetailsEmptyListAdded)
+    {
+        CloudVendorException cloudVendorException=new CloudVendorException(
+                cloudVendorDetailsEmptyListAdded.getMessage(),
+                cloudVendorDetailsEmptyListAdded.getCause(),
+                HttpStatus.NOT_ACCEPTABLE);
+
+        return new ResponseEntity<>(cloudVendorException, HttpStatus.NOT_ACCEPTABLE);
+    }
+
 
 
 
