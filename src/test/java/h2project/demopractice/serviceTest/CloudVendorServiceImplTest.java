@@ -21,6 +21,7 @@ import java.util.Optional;
 
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
@@ -29,16 +30,11 @@ public class CloudVendorServiceImplTest {
 
     @Mock
     CloudVendorRepository cloudVendorRepository;
-
     @InjectMocks
     CloudVendorService cloudVendorService=new CloudVendorServiceImpl(cloudVendorRepository);
-
     @Mock
      CloudVendorModel cloudVendorModelTest;
-
      List<CloudVendorModel> vendorlist;
-
-
 
     @BeforeEach
     void setUp() {
@@ -54,10 +50,22 @@ public class CloudVendorServiceImplTest {
     public void verify_user_should_be_able_to_save_cloudvendor() {
 
         when(cloudVendorRepository.save(cloudVendorModelTest)).thenReturn(cloudVendorModelTest);
-
         assertEquals("Created successfully", cloudVendorService.createCloudVendor(cloudVendorModelTest));
 
     }
+
+    @Test
+    public void verify_user_should_be_able_to_save_list_of_cloud_vendor()
+    {
+       // Optional<List<CloudVendorModel>> check = Optional.of(vendorlist);
+        when(cloudVendorRepository.saveAll(anyList())).thenReturn(vendorlist);
+        String response = cloudVendorService.createCloudVendorList(vendorlist);
+        assertEquals("List added successfully", response);
+
+
+    }
+
+
 
     @Test
     public void verify_user_should_be_able_to_get_cloudvendor() {
@@ -70,7 +78,6 @@ public class CloudVendorServiceImplTest {
         assertEquals(vendordetails.getVendorName(), cloudVendorModelTest.getVendorName());
         assertEquals(vendordetails.getVendorAddress(), cloudVendorModelTest.getVendorAddress());
         assertEquals(vendordetails.getVendorNumber(), cloudVendorModelTest.getVendorNumber());
-
 
     }
     @Test
@@ -94,7 +101,15 @@ public class CloudVendorServiceImplTest {
     @Test
     public void verify_user_should_be_able_to_update_the_vendor_details()
     {
+        when(cloudVendorRepository.findById(anyLong())).thenReturn(Optional.ofNullable(cloudVendorModelTest));
 
+        cloudVendorModelTest.setVendorId(111L);
+        cloudVendorModelTest.setVendorName("updatedName");
+        cloudVendorModelTest.setVendorAddress("updated address");
+        cloudVendorModelTest.setVendorNumber("updated number");
+
+        String op = cloudVendorService.updateCloudVendor(cloudVendorModelTest, 11L);
+        assertEquals("Successfully updated vendor details", op);
 
     }
 
