@@ -23,7 +23,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-//@WebMvcTest
 @ExtendWith(MockitoExtension.class)
 public class CloudVendorControllerTest {
 
@@ -50,7 +49,7 @@ public class CloudVendorControllerTest {
         arraylist.add(new CloudVendorModel(3L, "Azure", "USA", "Vendor3"));
 
         ObjectMapper mapper = new ObjectMapper();
-        jsonString = mapper.writeValueAsString(cloudVendorModel);
+        jsonString = mapper.writer().withDefaultPrettyPrinter().writeValueAsString(cloudVendorModel);
 
 
     }
@@ -58,19 +57,12 @@ public class CloudVendorControllerTest {
     @Test
     public void createCloudvendorDeatilsTest() throws Exception {
 
-
-//        String expected = "Cloud vendor created";
         when(cloudVendorService.createCloudVendor(cloudVendorModel)).thenReturn("Created successfully");
-//        String response = cloudVendorController.createCloudvendorDeatils(cloudVendorModel);
 
-//        assertEquals(expected, response);
-
-
-//        this.mockMVC.perform(post("/create"))
+//        this.mockMVC.perform(post("/cloudvendor/create"))
 //                .contentType(MediaType.APPLICATION_JSON)
 //                .content(jsonString)
 //                .andDo(print()).andExpect(status().isOk());
-
     }
 
     @Test

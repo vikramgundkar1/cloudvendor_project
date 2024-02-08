@@ -12,9 +12,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/cloudvendor")
 public class CloudVendorController {
-
     @Autowired
     CloudVendorService cloudVendorService;
+
 
     public CloudVendorController(CloudVendorService cloudVendorService) {
         super();
@@ -27,7 +27,6 @@ public class CloudVendorController {
     public String createCloudvendorDeatils(@RequestBody CloudVendorModel cloudVendorModel) {
         cloudVendorService.createCloudVendor(cloudVendorModel);
         return "Cloud vendor created";
-
     }
 
     @PostMapping("/create/list")
@@ -35,7 +34,6 @@ public class CloudVendorController {
     public ResponseEntity<Object> createCloudvendorDeatilslist(@RequestBody List<CloudVendorModel> cloudVendorModellist) {
         cloudVendorService.createCloudVendorList(cloudVendorModellist);
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
     }
 
     @GetMapping("/getall")
@@ -65,6 +63,7 @@ public class CloudVendorController {
         cloudVendorService.deleteCloudVendor(vendorId);
         return "Cloud Vendor Deleted Successfully";
     }
+
 
 }
 

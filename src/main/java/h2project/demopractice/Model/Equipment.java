@@ -7,26 +7,27 @@ import jakarta.persistence.*;
 public class Equipment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    int id;
-
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    int equipmentId;
     String equipmentName;
-    String equipmentNumber;
     String equipmentType;
     Long price;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "vendor_id")
+    private CloudVendorModel cloudVendorModel;
 
     public Equipment() {
     }
 
-    public Equipment(String equipmentName, String equipmentNumber, String equipmentType, Long price) {
+    public Equipment(String equipmentName, String equipmentType, Long price) {
         this.equipmentName = equipmentName;
-        this.equipmentNumber = equipmentNumber;
         this.equipmentType = equipmentType;
         this.price = price;
     }
 
-    public int getId() {
-        return id;
+    public int getEquipmentId() {
+        return equipmentId;
     }
 
     public String getEquipmentName() {
@@ -55,12 +56,13 @@ public class Equipment {
 
     @Override
     public String toString() {
-        return "CloudVendorEquipment{" +
-                "id=" + id +
+        return "Equipment{" +
+                "equipmentId=" + equipmentId +
                 ", equipmentName='" + equipmentName + '\'' +
-                ", equipmentId='" + equipmentNumber + '\'' +
                 ", equipmentType='" + equipmentType + '\'' +
                 ", price=" + price +
+                ", cloudVendorModel=" + cloudVendorModel +
                 '}';
     }
 }
+

@@ -46,7 +46,6 @@ public class CloudVendorServiceImpl implements CloudVendorService {
         return "List added successfully";
     }
 
-
     @Override
     public String updateCloudVendor(CloudVendorModel cloudVendorModel, Long vendorId) {
 
