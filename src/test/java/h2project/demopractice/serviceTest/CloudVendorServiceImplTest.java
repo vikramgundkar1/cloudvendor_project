@@ -11,14 +11,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyList;
@@ -31,16 +28,16 @@ public class CloudVendorServiceImplTest {
     @Mock
     CloudVendorRepository cloudVendorRepository;
     @InjectMocks
-    CloudVendorService cloudVendorService=new CloudVendorServiceImpl(cloudVendorRepository);
+    CloudVendorService cloudVendorService = new CloudVendorServiceImpl(cloudVendorRepository);
     @Mock
-     CloudVendorModel cloudVendorModelTest;
-     List<CloudVendorModel> vendorlist;
+    CloudVendorModel cloudVendorModelTest;
+    List<CloudVendorModel> vendorlist;
 
     @BeforeEach
     void setUp() {
-        cloudVendorModelTest=new CloudVendorModel(1L,"Amazon", "USA", "Vendor1");
+        cloudVendorModelTest = new CloudVendorModel(1L, "Amazon", "USA", "Vendor1");
 
-        vendorlist=new ArrayList<>();
+        vendorlist = new ArrayList<>();
         vendorlist.add(new CloudVendorModel(2L, "GCP", "USA", "Vendor2"));
         vendorlist.add(new CloudVendorModel(3L, "Azure", "USA", "Vendor3"));
 
@@ -55,16 +52,14 @@ public class CloudVendorServiceImplTest {
     }
 
     @Test
-    public void verify_user_should_be_able_to_save_list_of_cloud_vendor()
-    {
-       // Optional<List<CloudVendorModel>> check = Optional.of(vendorlist);
+    public void verify_user_should_be_able_to_save_list_of_cloud_vendor() {
+        // Optional<List<CloudVendorModel>> check = Optional.of(vendorlist);
         when(cloudVendorRepository.saveAll(anyList())).thenReturn(vendorlist);
         String response = cloudVendorService.createCloudVendorList(vendorlist);
         assertEquals("List added successfully", response);
 
 
     }
-
 
 
     @Test
@@ -80,6 +75,7 @@ public class CloudVendorServiceImplTest {
         assertEquals(vendordetails.getVendorNumber(), cloudVendorModelTest.getVendorNumber());
 
     }
+
     @Test
     public void verify_user_should_be_able_to_throw_exception_if_vendor_does_not_exist() {
 
@@ -89,6 +85,7 @@ public class CloudVendorServiceImplTest {
         assertEquals("Vendor details not found", ceException.getMessage());
 
     }
+
     @Test
     public void verify_user_should_be_able_to_get_list_of_cloud_vendors() {
 
@@ -99,8 +96,7 @@ public class CloudVendorServiceImplTest {
     }
 
     @Test
-    public void verify_user_should_be_able_to_update_the_vendor_details()
-    {
+    public void verify_user_should_be_able_to_update_the_vendor_details() {
         when(cloudVendorRepository.findById(anyLong())).thenReturn(Optional.ofNullable(cloudVendorModelTest));
 
         cloudVendorModelTest.setVendorId(111L);
@@ -114,8 +110,7 @@ public class CloudVendorServiceImplTest {
     }
 
     @Test
-    public void verify_user_should_be_able_to_delete_vendor_details_by_id()
-    {
+    public void verify_user_should_be_able_to_delete_vendor_details_by_id() {
         when(cloudVendorRepository.findById(anyLong())).thenReturn(Optional.of(cloudVendorModelTest));
         String result = cloudVendorService.deleteCloudVendor(5L);
         assertEquals("deleted successfully", result);

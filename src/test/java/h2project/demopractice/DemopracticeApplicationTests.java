@@ -6,9 +6,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class DemopracticeApplicationTests {
 
-	@Test
-	void contextLoads() {
-		System.out.println("Yes");
-	}
+    @Test
+    void contextLoads() {
+        System.out.println("Yes");
+    }
 
 }

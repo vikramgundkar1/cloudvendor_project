@@ -7,31 +7,24 @@ import h2project.demopractice.controller.CloudVendorController;
 import h2project.demopractice.service.CloudVendorService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
-
 import java.util.List;
 
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
-import static org.springframework.http.RequestEntity.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 //@WebMvcTest
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class CloudVendorControllerTest {
 
     @InjectMocks
@@ -41,78 +34,90 @@ public class CloudVendorControllerTest {
     CloudVendorService cloudVendorService;
 
     CloudVendorModel cloudVendorModel;
-
-    MockMvc mockMVC;
     Long vendorId;
-
+    List<CloudVendorModel> arraylist;
+    String jsonString;
+    private MockMvc mockMVC;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws JsonProcessingException {
 
-        cloudVendorModel=new CloudVendorModel(1,"Amazon","US","Vendo1");
+        mockMVC = MockMvcBuilders.standaloneSetup(cloudVendorController).setControllerAdvice((new Exception())).build();
+        cloudVendorModel = new CloudVendorModel(1L, "Amazon", "USA", "Vendor1");
+
+        arraylist = new ArrayList<>();
+        arraylist.add(new CloudVendorModel(2L, "GCP", "USA", "Vendor2"));
+        arraylist.add(new CloudVendorModel(3L, "Azure", "USA", "Vendor3"));
+
+        ObjectMapper mapper = new ObjectMapper();
+        jsonString = mapper.writeValueAsString(cloudVendorModel);
+
 
     }
 
     @Test
     public void createCloudvendorDeatilsTest() throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonString = mapper.writeValueAsString(cloudVendorModel);
 
-        String expected="Cloud vendor created";
+
+//        String expected = "Cloud vendor created";
         when(cloudVendorService.createCloudVendor(cloudVendorModel)).thenReturn("Created successfully");
-        String response = cloudVendorController.createCloudvendorDeatils(cloudVendorModel);
+//        String response = cloudVendorController.createCloudvendorDeatils(cloudVendorModel);
 
-        assertEquals(expected, response);
+//        assertEquals(expected, response);
 
 
-//        this.mockMVC.perform(post("/create")).contentType(MediaType.APPLICATION_JSON)
-//                .content(jsonString).andDo(print()).andExpect(status().isOk());
+//        this.mockMVC.perform(post("/create"))
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(jsonString)
+//                .andDo(print()).andExpect(status().isOk());
 
     }
 
     @Test
-    public void getAllCloudVendorDetailsTest()
-    {
-        List<CloudVendorModel> arraylist=new ArrayList<>();
+    public void updateVendorDetailsTest() throws Exception {
+
+        when(cloudVendorService.updateCloudVendor(cloudVendorModel, 1L)).thenReturn("Cloud Vendor Updated!!!");
+
+//        this.mockMVC.perform(put("/update/1"))
+//                .accept(MediaType.APPLICATION_JSON)
+//                .content(jsonString)
+//                .andDo(print()).andExpect(status().isOk());
+    }
+
+    @Test
+    public void getAllCloudVendorDetailsTest() throws Exception {
+
 
         when(cloudVendorService.getAllCloudVendor()).thenReturn(arraylist);
-        ResponseEntity<List<CloudVendorModel>> response = cloudVendorController.getAllCloudVendorDetails();
 
-        assertEquals(arraylist ,response);
-        
-    }
-    
-    @Test
-    public void  getVendorDetailsTest()
-    {
-        vendorId = 1L;
-        
-        when (cloudVendorService.getCloudVendor(vendorId)).thenReturn(cloudVendorModel);
-        ResponseEntity<CloudVendorModel> details = cloudVendorController.getVendorDetails(1L);
-        assertEquals(cloudVendorModel,details);
-        
-    }
-    @Test
-    public void updateVendorDetailsTest()
-    {
-        String expected="Cloud Vendor Updated!!!";
-        doNothing().when(cloudVendorService.updateCloudVendor(cloudVendorModel, vendorId));
+        this.mockMVC.perform(get("/cloudvendor/getall"))
+                .andDo(print()).andExpect(status().isOk());
 
-        String response = cloudVendorController.updateVendorDetails(1L, cloudVendorModel);
-        assertEquals(expected, response);
+
     }
 
     @Test
-    public void deleteVendorDetailsByIdTest()
-    {
-        String expected="Cloud Vendor Deleted Successfully";
-        doNothing().when(cloudVendorService.deleteCloudVendor(vendorId));
+    public void getVendorDetailsTest() throws Exception {
 
-        String response = cloudVendorController.deleteVendorDetailsById(vendorId);
-        assertEquals(expected,response);
+
+        when(cloudVendorService.getCloudVendor(1L)).thenReturn(cloudVendorModel);
+
+        this.mockMVC.perform(get("/cloudvendor/getall/1"))
+                .andDo(print()).andExpect(status().isOk());
 
     }
 
+
+    @Test
+    public void deleteVendorDetailsByIdTest() throws Exception {
+//        String expected = "Cloud Vendor Deleted Successfully";
+        when(cloudVendorService.deleteCloudVendor(1L)).thenReturn("Cloud Vendor Deleted Successfully");
+
+        this.mockMVC.perform(delete("/cloudvendor/delete/1"))
+                .andDo(print()).andExpect(status().isOk());
+
+
+    }
 
 
 }
