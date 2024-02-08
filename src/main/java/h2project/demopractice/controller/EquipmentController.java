@@ -17,10 +17,10 @@ public class EquipmentController {
     @Autowired
     EquipmentService equipmentService;
 
-    @PostMapping("/create")
+    @PostMapping("/{vendorId}/create")
 
-    public String createEquipmentDeatils(@RequestBody Equipment equipment) {
-        equipmentService.createEquipment(equipment);
+    public String createEquipmentDeatils(@PathVariable Long vendorId, @RequestBody Equipment equipment) {
+        equipmentService.createEquipment(equipment, vendorId);
         return "Equipment created";
 
     }

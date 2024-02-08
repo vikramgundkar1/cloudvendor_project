@@ -2,6 +2,7 @@ package h2project.demopractice.service.serviceImpl;
 
 import h2project.demopractice.Model.Equipment;
 import h2project.demopractice.exceptions.CloudVendorNotFoundException;
+import h2project.demopractice.repository.CloudVendorRepository;
 import h2project.demopractice.repository.EquipmentRepository;
 import h2project.demopractice.service.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +17,21 @@ public class EquipmentServiceImpl implements EquipmentService {
     @Autowired
     EquipmentRepository equipmentRepository;
 
+    @Autowired
+    CloudVendorRepository cloudVendorRepository;
+
     private Equipment equipment;
 
     @Override
-    public String createEquipment(Equipment equipment) {
+    public String createEquipment(Equipment equipment, Long vendorId) {
 
-        equipmentRepository.save(equipment);
+        if (cloudVendorRepository.existsById(vendorId)) {
+            equipmentRepository.save(equipment);
+
+        } else {
+            throw new CloudVendorNotFoundException("Cloud Vendor Not found");
+        }
+
         return "Equipment Added Successfully";
     }
 
