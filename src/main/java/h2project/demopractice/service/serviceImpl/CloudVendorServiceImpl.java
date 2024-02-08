@@ -3,7 +3,6 @@ package h2project.demopractice.service.serviceImpl;
 import h2project.demopractice.Model.CloudVendorModel;
 import h2project.demopractice.exceptions.CloudVendorDetailsEmptyListAdded;
 import h2project.demopractice.exceptions.CloudVendorNotFoundException;
-
 import h2project.demopractice.repository.CloudVendorRepository;
 import h2project.demopractice.service.CloudVendorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
 @Service
 public class CloudVendorServiceImpl implements CloudVendorService {
 
@@ -26,12 +26,13 @@ public class CloudVendorServiceImpl implements CloudVendorService {
     @Override
     public String createCloudVendor(CloudVendorModel cloudVendorModel) {
 
-            cloudVendorRepository.save(cloudVendorModel);
+        cloudVendorRepository.save(cloudVendorModel);
 
         return "Created successfully";
 
 
     }
+
     @Override
     public String createCloudVendorList(List<CloudVendorModel> cloudVendorlist) {
         // Optional<List<CloudVendorModel>> check = Optional.of(cloudVendorlist);
