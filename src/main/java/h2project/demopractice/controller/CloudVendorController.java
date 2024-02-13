@@ -63,7 +63,5 @@ public class CloudVendorController {
         cloudVendorService.deleteCloudVendor(vendorId);
         return "Cloud Vendor Deleted Successfully";
     }
-
-
 }
 

@@ -19,10 +19,18 @@ public class EquipmentController {
 
     @PostMapping("/{vendorId}/create")
 
-    public String createEquipmentDeatils(@PathVariable Long vendorId, @RequestBody Equipment equipment) {
-        equipmentService.createEquipment(equipment, vendorId);
+    public String createEquipmentDeatils(@PathVariable Long vendorId, @RequestBody List<Equipment> equipments) {
+
+        equipmentService.createEquipment(equipments, vendorId);
         return "Equipment created";
 
+    }
+
+    @PutMapping("/update/{equipmentId}")
+    public String updateVendorDetails(@PathVariable int equipmentId, @RequestBody Equipment equipment) {
+        equipmentService.updateEquipment(equipment, equipmentId);
+
+        return "Equipment Updated!!!";
     }
 
 
@@ -41,18 +49,10 @@ public class EquipmentController {
         return new ResponseEntity<Equipment>(equipmentDetails, HttpStatus.OK);
     }
 
-    @PutMapping("/update/{equipmentId}")
-    public String updateVendorDetails(@PathVariable int equipmentId, @RequestBody Equipment equipment) {
-        equipmentService.updateEquipment(equipment, equipmentId);
-
-        return "Cloud Vendor Updated!!!";
-    }
-
     @DeleteMapping("/delete/{equipmentId}")
     public String deleteVendorDetailsById(@PathVariable int equipmentId) {
         equipmentService.deleteEquipmentById(equipmentId);
         return "Cloud Vendor Deleted Successfully";
     }
-
 
 }

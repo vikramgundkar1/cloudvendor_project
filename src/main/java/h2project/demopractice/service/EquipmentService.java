@@ -7,7 +7,7 @@ import java.util.List;
 public interface EquipmentService {
 
 
-    public String createEquipment(Equipment equipment, Long vendorId);
+    public String createEquipment(List<Equipment> equipments, Long vid);
 
     public String updateEquipment(Equipment equipment, Integer equipmentId);
 

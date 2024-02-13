@@ -13,8 +13,8 @@ public class Equipment {
     String equipmentType;
     Long price;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "vendor_id")
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "vendor_id", nullable = false)
     private CloudVendorModel cloudVendorModel;
 
     public Equipment() {
@@ -24,6 +24,17 @@ public class Equipment {
         this.equipmentName = equipmentName;
         this.equipmentType = equipmentType;
         this.price = price;
+    }
+
+    public Equipment(int equipmentId, String equipmentName, String equipmentType, Long price) {
+        this.equipmentId = equipmentId;
+        this.equipmentName = equipmentName;
+        this.equipmentType = equipmentType;
+        this.price = price;
+    }
+
+    public void setCloudVendorModel(CloudVendorModel cloudVendorModel) {
+        this.cloudVendorModel = cloudVendorModel;
     }
 
     public int getEquipmentId() {

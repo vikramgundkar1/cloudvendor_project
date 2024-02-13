@@ -99,7 +99,7 @@ public class CloudVendorServiceImplTest {
     public void verify_user_should_be_able_to_update_the_vendor_details() {
         when(cloudVendorRepository.findById(anyLong())).thenReturn(Optional.ofNullable(cloudVendorModelTest));
 
-        cloudVendorModelTest.setVendorId(111L);
+       // cloudVendorModelTest.setVendorId(111L);
         cloudVendorModelTest.setVendorName("updatedName");
         cloudVendorModelTest.setVendorAddress("updated address");
         cloudVendorModelTest.setVendorNumber("updated number");

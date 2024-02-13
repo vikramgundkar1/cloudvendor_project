@@ -51,7 +51,6 @@ public class CloudVendorControllerTest {
         ObjectMapper mapper = new ObjectMapper();
         jsonString = mapper.writer().withDefaultPrettyPrinter().writeValueAsString(cloudVendorModel);
 
-
     }
 
     @Test
@@ -98,8 +97,6 @@ public class CloudVendorControllerTest {
                 .andDo(print()).andExpect(status().isOk());
 
     }
-
-
     @Test
     public void deleteVendorDetailsByIdTest() throws Exception {
 //        String expected = "Cloud Vendor Deleted Successfully";
@@ -107,7 +104,6 @@ public class CloudVendorControllerTest {
 
         this.mockMVC.perform(delete("/cloudvendor/delete/1"))
                 .andDo(print()).andExpect(status().isOk());
-
 
     }
 

@@ -1,5 +1,6 @@
 package h2project.demopractice.service.serviceImpl;
 
+import h2project.demopractice.Model.CloudVendorModel;
 import h2project.demopractice.Model.Equipment;
 import h2project.demopractice.exceptions.CloudVendorNotFoundException;
 import h2project.demopractice.repository.CloudVendorRepository;
@@ -22,30 +23,48 @@ public class EquipmentServiceImpl implements EquipmentService {
 
     private Equipment equipment;
 
-    @Override
-    public String createEquipment(Equipment equipment, Long vendorId) {
+    private List<Equipment> equipments;
 
-        if (cloudVendorRepository.existsById(vendorId)) {
-            equipmentRepository.save(equipment);
+    @Override
+    public String createEquipment(List<Equipment> equipments, Long vendorId) {
+
+        Optional<CloudVendorModel> cloudVendorOptional = cloudVendorRepository.findById(vendorId);
+        if (cloudVendorOptional.isPresent()) {
+
+            CloudVendorModel cloudvendorModel = cloudVendorOptional.get();
+            if (equipments.isEmpty()) {
+                throw new CloudVendorNotFoundException("please add at least one equipment");
+            } else {
+
+                equipments.forEach(a -> {a.setCloudVendorModel(cloudvendorModel);
+                            equipmentRepository.saveAll(equipments);
+                }
+
+                );
+
+            }
 
         } else {
             throw new CloudVendorNotFoundException("Cloud Vendor Not found");
         }
-
         return "Equipment Added Successfully";
     }
 
     @Override
     public String updateEquipment(Equipment equipment, Integer equipmentId) {
 
-        Equipment existingEquipment = getEquipmentById(equipmentId);
+        Optional<Equipment> checkavilablity = equipmentRepository.findById(equipmentId);
+        if (checkavilablity.isPresent()) {
+            Equipment existingEquipment = checkavilablity.get();
 
+            existingEquipment.setEquipmentName(equipment.getEquipmentName());
+            existingEquipment.setEquipmentType(equipment.getEquipmentType());
+            existingEquipment.setPrice(equipment.getPrice());
 
-        existingEquipment.setEquipmentName(equipment.getEquipmentName());
-        existingEquipment.setEquipmentType(equipment.getEquipmentType());
-        existingEquipment.setPrice(equipment.getPrice());
-
-        equipmentRepository.save(existingEquipment);
+            equipmentRepository.save(existingEquipment);
+        } else {
+            throw new CloudVendorNotFoundException("Eqipment not found");
+        }
 
         return "Equipment Updated Successfully";
     }
@@ -75,7 +94,6 @@ public class EquipmentServiceImpl implements EquipmentService {
 
         getEquipmentById(equipmentId);
         equipmentRepository.deleteById(equipmentId);
-
 
         return "Equipment deleted Successfully";
     }

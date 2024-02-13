@@ -14,7 +14,7 @@ public class CloudVendorModel {
     String vendorAddress;
     String vendorNumber;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "cloudVendorModel", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "cloudVendorModel", cascade = CascadeType.REMOVE)
     private List<Equipment> equipment;
 
     public CloudVendorModel() {
@@ -34,21 +34,12 @@ public class CloudVendorModel {
         this.vendorNumber = vendorNumber;
     }
 
-    public List<Equipment> getEquipment() {
-        return equipment;
-    }
-
-    public void setEquipment(List<Equipment> equipment) {
-        this.equipment = equipment;
-    }
-
-    public long getVendorId() {
+    public long getId() {
         return id;
     }
 
-    public void setVendorId(long vendorId) {
-        this.id = vendorId;
-    }
+
+
 
     public String getVendorName() {
         return vendorName;
