@@ -13,6 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class ApplicationSecurity {
 
+
     @Bean
     public InMemoryUserDetailsManager UserDetails()
 
@@ -33,20 +34,20 @@ public class ApplicationSecurity {
 
     }
 
-    	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
-	{
-
-
-		http.authorizeRequests(
-
-				(req)-> req
-							.antMatchers("/cloudvendor/**").permitAll()
-							.anyRequest().authenticated()
-							).formLogin();
-		return http.build();
-
-	}
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/v3/api-docs/**",
+                        "/swagger-ui/**",
+                        "/swagger-ui.html").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .formLogin()
+                .defaultSuccessUrl("");
+        return http.build();
+    }
 
 
 
