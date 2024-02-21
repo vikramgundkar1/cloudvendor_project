@@ -8,7 +8,7 @@ class DemopracticeApplicationTests {
 
     @Test
     void contextLoads() {
-        System.out.println("Yes");
+        
     }
 
 }
