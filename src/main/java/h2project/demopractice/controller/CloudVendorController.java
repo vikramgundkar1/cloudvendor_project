@@ -15,16 +15,14 @@ public class CloudVendorController {
     @Autowired
     CloudVendorService cloudVendorService;
 
-
     public CloudVendorController(CloudVendorService cloudVendorService) {
         super();
         this.cloudVendorService = cloudVendorService;
     }
 
-
     @PostMapping("/create")
 
-    public String createCloudvendorDeatils(@RequestBody CloudVendorModel cloudVendorModel) {
+    public String createCloudvendorDeatils(@RequestBody CloudVendorModel cloudVendorModel) throws Exception {
         cloudVendorService.createCloudVendor(cloudVendorModel);
         return "Cloud vendor created";
     }
@@ -62,6 +60,12 @@ public class CloudVendorController {
     public String deleteVendorDetailsById(@PathVariable Long vendorId) {
         cloudVendorService.deleteCloudVendor(vendorId);
         return "Cloud Vendor Deleted Successfully";
+    }
+
+    @GetMapping("/sample")
+    public String sampleString() {
+
+       return "This is sample String";
     }
 
 

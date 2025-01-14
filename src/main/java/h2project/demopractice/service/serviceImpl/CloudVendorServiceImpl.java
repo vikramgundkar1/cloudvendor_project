@@ -24,12 +24,17 @@ public class CloudVendorServiceImpl implements CloudVendorService {
 
 
     @Override
-    public String createCloudVendor(CloudVendorModel cloudVendorModel) {
+    public String createCloudVendor(CloudVendorModel cloudVendorModel) throws Exception {
 
-        cloudVendorRepository.save(cloudVendorModel);
-
-        return "Created successfully";
-
+        Boolean nameStatus = validateNameOfVendor(cloudVendorModel.getVendorName());
+        if(nameStatus) {
+            cloudVendorRepository.save(cloudVendorModel);
+            return "Created successfully";
+        }
+        else
+        {
+            throw new Exception("This is not valid CloudVendor");
+        }
 
     }
 
@@ -88,5 +93,18 @@ public class CloudVendorServiceImpl implements CloudVendorService {
 
         return cloudVendorRepository.findAll();
 
+    }
+
+
+    private Boolean validateNameOfVendor(String vendorName)
+    {
+        return vendorName != null;
+    }
+
+    @Override
+    public void doingSomeJavaOperationwWithVoidOutput()
+    {
+        String s="ABC";
+        int length = s.length();
     }
 }

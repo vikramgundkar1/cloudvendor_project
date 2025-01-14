@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CloudVendorService {
 
-    String createCloudVendor(CloudVendorModel cloudVendorModel);
+    String createCloudVendor(CloudVendorModel cloudVendorModel) throws Exception;
 
     String createCloudVendorList(List<CloudVendorModel> cloudVendorlist);
 
@@ -18,6 +18,8 @@ public interface CloudVendorService {
 
 
     String deleteCloudVendor(Long vendorId);
+
+    public void doingSomeJavaOperationwWithVoidOutput();
 
 
 }

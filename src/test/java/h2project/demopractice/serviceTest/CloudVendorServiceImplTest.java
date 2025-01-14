@@ -6,13 +6,17 @@ import h2project.demopractice.exceptions.CloudVendorNotFoundException;
 import h2project.demopractice.repository.CloudVendorRepository;
 import h2project.demopractice.service.CloudVendorService;
 import h2project.demopractice.service.serviceImpl.CloudVendorServiceImpl;
+import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +24,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CloudVendorServiceImplTest {
@@ -44,11 +48,20 @@ public class CloudVendorServiceImplTest {
     }
 
     @Test
-    public void verify_user_should_be_able_to_save_cloudvendor() {
+    public void verify_user_should_be_able_to_save_cloudvendor() throws Exception {
 
         when(cloudVendorRepository.save(cloudVendorModelTest)).thenReturn(cloudVendorModelTest);
         assertEquals("Created successfully", cloudVendorService.createCloudVendor(cloudVendorModelTest));
 
+    }
+
+    @Ignore
+    public void validateNameOfVendorTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        //Used Java Reflection
+        Method method = CloudVendorService.class.getDeclaredMethod("validateNameOfVendor", String.class);
+        method.setAccessible(true);
+        Boolean vendor = (Boolean) method.invoke(cloudVendorService, cloudVendorModelTest.getVendorName());
+        assertTrue(vendor);
     }
 
     @Test
@@ -114,6 +127,14 @@ public class CloudVendorServiceImplTest {
         when(cloudVendorRepository.findById(anyLong())).thenReturn(Optional.of(cloudVendorModelTest));
         String result = cloudVendorService.deleteCloudVendor(5L);
         assertEquals("deleted successfully", result);
+
+    }
+    @Test
+    public void doingSomeJavaOperationwWithVoidOutputTest()
+    {
+        assertDoesNotThrow(()->{
+            cloudVendorService.doingSomeJavaOperationwWithVoidOutput();
+        });
 
     }
 }
